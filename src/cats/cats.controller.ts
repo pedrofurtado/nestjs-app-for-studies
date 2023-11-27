@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, ValidationPipe, UseFilters } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, ValidationPipe, UseFilters, ParseIntPipe, DefaultValuePipe, Query, BadRequestException } from '@nestjs/common';
 import { CatsExceptionFilter } from './cats.exception_filter';
 import { CatsService } from './cats.service';
 import { CreateCatDto } from './dto/create-cat.dto';
@@ -16,17 +16,24 @@ export class CatsController {
   }
 
   @Get()
-  findAll() {
+  findAll(
+    @Query('catsFilter', new DefaultValuePipe('none_passed')) catsFilter: number
+  ) {
+    console.log('catsFilter', catsFilter);
     return this.catsService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id', ParseIntPipe) id: string) {
+    console.log('constructor is', id.constructor);
     return this.catsService.findOne(+id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCatDto: UpdateCatDto) {
+  update(
+    @Param('id', new ParseIntPipe({ errorHttpStatusCode: 405 })) id: string,
+    @Body() updateCatDto: UpdateCatDto
+  ) {
     return this.catsService.update(+id, updateCatDto);
   }
 
