@@ -1,0 +1,7 @@
+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
+docker container run --rm -it -v $(pwd):/srv -w /srv -p 3000:3000 docker-registry.locaweb.com.br/buster/node-dev:16 /bin/bash
+> npm i -g @nestjs/cli
+> nest new project-name
+
+alterar o tsconfig.json
+> npm run start:dev
