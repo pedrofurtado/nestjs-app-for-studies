@@ -14,7 +14,7 @@ export class CatsService {
       this.cats.push(createCatDto);
     }
 
-    return `This action adds a new cat ${createCatDto}`;
+    return `This action adds a new cat ${JSON.stringify(createCatDto)}`;
   }
 
   findAll() {
