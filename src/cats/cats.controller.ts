@@ -1,4 +1,5 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, ValidationPipe, UseFilters, ParseIntPipe, DefaultValuePipe, Query, BadRequestException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, ValidationPipe, UseFilters, ParseIntPipe, DefaultValuePipe, Query, BadRequestException, UseInterceptors } from '@nestjs/common';
+import { CatsInterceptor } from './cats.interceptor';
 import { CatsExceptionFilter } from './cats.exception_filter';
 import { CatsService } from './cats.service';
 import { CreateCatDto } from './dto/create-cat.dto';
@@ -6,6 +7,7 @@ import { UpdateCatDto } from './dto/update-cat.dto';
 
 @Controller('cats')
 @UseFilters(new CatsExceptionFilter())
+@UseInterceptors(CatsInterceptor)
 export class CatsController {
   constructor(private readonly catsService: CatsService) {}
 

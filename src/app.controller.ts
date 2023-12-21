@@ -2,7 +2,7 @@ import { Controller, Get, HttpCode, Param, Req } from '@nestjs/common';
 import { Request } from 'express';
 import { AppService } from './app.service';
 
-@Controller('home')
+@Controller('')
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
@@ -13,5 +13,14 @@ export class AppController {
     @Param() params: any
   ): string {
     return `${this.appService.getHello()} + ${JSON.stringify(req.query)} + ${JSON.stringify(params)}`;
+  }
+
+  @Get('/')
+  @HttpCode(200)
+  home(
+    @Req() req: Request,
+    @Param() params: any
+  ): string {
+    return `cats nestjs app - furtado`;
   }
 }
