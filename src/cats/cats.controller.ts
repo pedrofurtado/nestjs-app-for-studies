@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, ValidationPipe, UseFilters, ParseIntPipe, DefaultValuePipe, Query, BadRequestException, UseInterceptors, HttpException, ParseArrayPipe } from '@nestjs/common';
+import { Controller, Render , Get, Post, Body, Patch, Param, Delete, UsePipes, ValidationPipe, UseFilters, ParseIntPipe, DefaultValuePipe, Query, BadRequestException, UseInterceptors, HttpException, ParseArrayPipe } from '@nestjs/common';
 import { CatsInterceptor } from './cats.interceptor';
 import { CatsExceptionFilter } from './cats.exception_filter';
 import { CatsService } from './cats.service';
@@ -16,6 +16,12 @@ export class CatsController {
     private readonly catsService: CatsService,
     private readonly httpService: HttpService
   ) {}
+
+  @Get('paginahtml')
+  @Render('catsindex')
+  pageHtml() {
+    return { message: 'Hello world11!' };
+  }
 
   @Post()
   @UsePipes(new ValidationPipe({ whitelist: true }))
