@@ -8,6 +8,8 @@ import configuration from './app.configuration';
 import { Cat } from './cats/entities/cat.entity';
 import { ScheduleModule } from '@nestjs/schedule';
 import { CronjobsService } from './cronjobs/cronjobs.service';
+import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -26,6 +28,8 @@ import { CronjobsService } from './cronjobs/cronjobs.service';
         timestamps: false
       },
     }),
+    AuthModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService, CronjobsService],

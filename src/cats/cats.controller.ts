@@ -1,4 +1,4 @@
-import { Controller, Render , Get, Post, Body, Patch, Param, Delete, UsePipes, ValidationPipe, UseFilters, ParseIntPipe, DefaultValuePipe, Query, BadRequestException, UseInterceptors, HttpException, ParseArrayPipe } from '@nestjs/common';
+import { Controller, Render , Get, Post, Body, Patch, Param, Delete, UsePipes, ValidationPipe, UseFilters, ParseIntPipe, DefaultValuePipe, Query, BadRequestException, UseInterceptors, HttpException, ParseArrayPipe, UseGuards } from '@nestjs/common';
 import { CatsInterceptor } from './cats.interceptor';
 import { CatsExceptionFilter } from './cats.exception_filter';
 import { CatsService } from './cats.service';
@@ -7,6 +7,7 @@ import { UpdateCatDto } from './dto/update-cat.dto';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom, Observable } from 'rxjs';
 import { AxiosResponse } from 'axios';
+import { AuthGuard } from '../auth/auth.guard';
 
 @Controller('cats')
 @UseFilters(new CatsExceptionFilter())
@@ -53,6 +54,13 @@ export class CatsController {
     }
 
     return this.catsService.findAll();
+  }
+
+  @Get('autenticado')
+  @UseGuards(AuthGuard)
+  catAutenticado(
+  ) {
+    return 'cat autenticado.';
   }
 
   @Get('cep')
