@@ -6,9 +6,12 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { SequelizeModule } from '@nestjs/sequelize';
 import configuration from './app.configuration';
 import { Cat } from './cats/entities/cat.entity';
+import { ScheduleModule } from '@nestjs/schedule';
+import { CronjobsService } from './cronjobs/cronjobs.service';
 
 @Module({
   imports: [
+    ScheduleModule.forRoot(),
     CatsModule,
     ConfigModule.forRoot({ load: [configuration] }),
     SequelizeModule.forRoot({
@@ -25,6 +28,6 @@ import { Cat } from './cats/entities/cat.entity';
     }),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, CronjobsService],
 })
 export class AppModule {}
