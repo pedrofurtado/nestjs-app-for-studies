@@ -2,43 +2,56 @@ import { HttpException, Injectable } from '@nestjs/common';
 import { CreateCatDto } from './dto/create-cat.dto';
 import { UpdateCatDto } from './dto/update-cat.dto';
 import { Cat } from './entities/cat.entity';
+import { InjectModel } from '@nestjs/sequelize';
 
 @Injectable()
 export class CatsService {
-  private cats: Cat[] = [];
+  constructor(
+    @InjectModel(Cat) private catModel: typeof Cat,
+  ) {}
 
-  create(createCatDto: CreateCatDto) {
-    let cat = this.cats.filter(cat => cat['id'] == createCatDto.id)
-
-    if(!cat[0]) {
-      this.cats.push(createCatDto);
-    }
-
-    return `This action adds a new cat ${JSON.stringify(createCatDto)}`;
+  async create(createCatDto: CreateCatDto) {
+    const createdCat = await this.catModel.create({
+      name: createCatDto.name,
+      owner: createCatDto.owner,
+      age: createCatDto.age
+    });
+    return createdCat;
   }
 
   findAll() {
-    //throw new HttpException('Forbidden', 403);
-    return this.cats;
+    return this.catModel.findAll();
   }
 
-  findOne(id: number) {
-    let cat = this.cats.filter(cat => cat['id'] == id)[0]
+  async findOne(id: number) {
+    const cat = await this.catModel.findOne({ where: { id: id } });
+
+    console.log('cat consultado no banco', cat);
 
     if(!cat) {
-      throw new HttpException(`Nao encontrado cat #${id}`, 412)
+      throw new HttpException('Cat nao encontrado meu caro', 404);
     }
 
     return cat;
   }
 
-  update(id: number, updateCatDto: UpdateCatDto) {
-    throw new HttpException('Forbidden', 403);
-    return `This action updates a #${id} cat ${JSON.stringify(updateCatDto)}`;
+  async update(id: number, updateCatDto: UpdateCatDto) {
+    const cat = await this.findOne(id);
+
+    cat.set({
+      name: updateCatDto.name,
+      owner: updateCatDto.owner,
+      age: updateCatDto.age
+    });
+
+    await cat.save();
+
+    return cat;
   }
 
-  remove(id: number) {
-    throw new HttpException('Forbidden', 403);
-    return `This action removes a #${id} cat`;
+  async remove(id: number) {
+    const cat = await this.findOne(id);
+    await cat.destroy();
+    return `This action removed a #${id} cat`;
   }
 }

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, ValidationPipe, UseFilters, ParseIntPipe, DefaultValuePipe, Query, BadRequestException, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, ValidationPipe, UseFilters, ParseIntPipe, DefaultValuePipe, Query, BadRequestException, UseInterceptors, HttpException } from '@nestjs/common';
 import { CatsInterceptor } from './cats.interceptor';
 import { CatsExceptionFilter } from './cats.exception_filter';
 import { CatsService } from './cats.service';
@@ -19,9 +19,14 @@ export class CatsController {
 
   @Get()
   findAll(
-    @Query('catsFilter', new DefaultValuePipe('none_passed')) catsFilter: number
+    @Query('catsFilter', new DefaultValuePipe('none_passed')) catsFilter: string
   ) {
     console.log('catsFilter', catsFilter);
+
+    if(catsFilter == 'show_403_error') {
+      throw new HttpException('Forbidden', 403);
+    }
+
     return this.catsService.findAll();
   }
 

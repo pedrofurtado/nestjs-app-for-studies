@@ -1,9 +1,9 @@
 import { IsInt, IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateCatDto {
-  @IsInt()
-  @IsNotEmpty()
-  id: number;
+  // @IsInt()
+  // @IsNotEmpty()
+  // id: number;
 
   @IsString()
   @IsNotEmpty()

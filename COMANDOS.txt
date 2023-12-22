@@ -1,6 +1,11 @@
-docker container run --rm -it -v $(pwd):/srv -w /srv -p 3000:3000 docker-registry.locaweb.com.br/buster/node-dev:16 /bin/bash
-> npm i -g @nestjs/cli
+docker container run --name catsdb_pg --rm -it -p 5432:5432 --env POSTGRES_USER=postgres --env POSTGRES_DATABASE=catsdb --env POSTGRES_PASSWORD=postgres postgres:11-alpine
+
+docker container run --name catsapp_node --env-file .env-sample --link catsdb_pg:catsdb_pg --rm -it -v $(pwd):/srv -w /srv -p 3000:3000 docker-registry.locaweb.com.br/buster/node-dev:16 /bin/bash
+> npm i
 > nest new project-name
 
 alterar o tsconfig.json
+> npm i
+> env $(cat .env-sample) npx sequelize-cli db:create
+> env $(cat .env-sample) npx sequelize-cli db:migrate
 > npm run start:dev
