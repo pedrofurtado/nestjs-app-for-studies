@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, ValidationPipe, UseFilters, ParseIntPipe, DefaultValuePipe, Query, BadRequestException, UseInterceptors, HttpException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, ValidationPipe, UseFilters, ParseIntPipe, DefaultValuePipe, Query, BadRequestException, UseInterceptors, HttpException, ParseArrayPipe } from '@nestjs/common';
 import { CatsInterceptor } from './cats.interceptor';
 import { CatsExceptionFilter } from './cats.exception_filter';
 import { CatsService } from './cats.service';
@@ -15,6 +15,19 @@ export class CatsController {
   @UsePipes(new ValidationPipe({ whitelist: true }))
   create(@Body() createCatDto: CreateCatDto) {
     return this.catsService.create(createCatDto);
+  }
+
+  @Post('bulk')
+  @UsePipes(new ValidationPipe({ whitelist: true }))
+  async createBulk(@Body(new ParseArrayPipe({ items: CreateCatDto })) createCatsDto: CreateCatDto[]) {
+    let catsList = [];
+
+    for (let i = 0; i < createCatsDto.length; i++) {
+      let catDto = createCatsDto[i];
+      catsList.push(await this.catsService.create(catDto));
+    }
+
+    return catsList;
   }
 
   @Get()
