@@ -4,12 +4,18 @@ import { CatsExceptionFilter } from './cats.exception_filter';
 import { CatsService } from './cats.service';
 import { CreateCatDto } from './dto/create-cat.dto';
 import { UpdateCatDto } from './dto/update-cat.dto';
+import { HttpService } from '@nestjs/axios';
+import { firstValueFrom, Observable } from 'rxjs';
+import { AxiosResponse } from 'axios';
 
 @Controller('cats')
 @UseFilters(new CatsExceptionFilter())
 @UseInterceptors(CatsInterceptor)
 export class CatsController {
-  constructor(private readonly catsService: CatsService) {}
+  constructor(
+    private readonly catsService: CatsService,
+    private readonly httpService: HttpService
+  ) {}
 
   @Post()
   @UsePipes(new ValidationPipe({ whitelist: true }))
@@ -41,6 +47,18 @@ export class CatsController {
     }
 
     return this.catsService.findAll();
+  }
+
+  @Get('cep')
+  async findCep(
+    @Query('cepCode', new DefaultValuePipe('none_passed')) cepCode: string
+  ): Promise<any> {
+    console.log('cepCode', cepCode);
+    const { data } = await firstValueFrom(
+      this.httpService.get(`https://viacep.com.br/ws/${cepCode}/json/`)
+    );
+
+    return data;
   }
 
   @Get(':id')

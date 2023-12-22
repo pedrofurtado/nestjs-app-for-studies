@@ -5,9 +5,11 @@ import { CatsMiddleware } from './cats.middleware';
 import { ConfigModule } from '@nestjs/config';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { Cat } from './entities/cat.entity';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
   imports: [
+    HttpModule,
     ConfigModule,
     SequelizeModule.forFeature([Cat])
   ],
