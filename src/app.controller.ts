@@ -18,8 +18,6 @@ export class AppController {
   @Get('/')
   @HttpCode(200)
   home(
-    @Req() req: Request,
-    @Param() params: any
   ): string {
     return `cats nestjs app - furtado`;
   }
