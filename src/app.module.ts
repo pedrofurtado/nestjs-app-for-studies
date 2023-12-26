@@ -10,6 +10,7 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { CronjobsService } from './cronjobs/cronjobs.service';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
+import { AuthzModule } from './authz/authz.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { UsersModule } from './users/users.module';
       },
     }),
     AuthModule,
+    AuthzModule,
     UsersModule,
   ],
   controllers: [AppController],

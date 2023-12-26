@@ -9,12 +9,14 @@ export class UsersService {
     {
       userId: 1,
       username: 'john',
+      roles: ['bla', 'ble'],
       password: 'smith',
       access_token: 'ajshdkjashdjkas'
     },
     {
       userId: 2,
       username: 'maria',
+      roles: ['bla', 'guest'],
       password: 'guess',
       access_token: '89d79g87d89fg789df'
     },

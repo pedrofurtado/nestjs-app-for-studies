@@ -8,6 +8,9 @@ import { HttpService } from '@nestjs/axios';
 import { firstValueFrom, Observable } from 'rxjs';
 import { AxiosResponse } from 'axios';
 import { AuthGuard } from '../auth/auth.guard';
+import { AuthzRolesGuard } from '../authz/authz.roles.guard';
+import { AuthzRole } from '../authz/authz.role.enum';
+import { AuthzRoles } from '../authz/authz.roles.decorator';
 
 @Controller('cats')
 @UseFilters(new CatsExceptionFilter())
@@ -57,7 +60,8 @@ export class CatsController {
   }
 
   @Get('autenticado')
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, AuthzRolesGuard)
+  @AuthzRoles(AuthzRole.Guest, AuthzRole.Admin)
   catAutenticado(
   ) {
     return 'cat autenticado.';
