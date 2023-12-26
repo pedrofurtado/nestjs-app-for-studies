@@ -11,10 +11,12 @@ import { CronjobsService } from './cronjobs/cronjobs.service';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { AuthzModule } from './authz/authz.module';
+import { ThrottlerModule } from '@nestjs/throttler';
 
 @Module({
   imports: [
     ScheduleModule.forRoot(),
+    ThrottlerModule.forRoot([{ ttl: 30000, limit: 5 }]),
     CatsModule,
     ConfigModule.forRoot({ load: [configuration] }),
     SequelizeModule.forRoot({

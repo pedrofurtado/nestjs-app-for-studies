@@ -11,6 +11,8 @@ import { AuthGuard } from '../auth/auth.guard';
 import { AuthzRolesGuard } from '../authz/authz.roles.guard';
 import { AuthzRole } from '../authz/authz.role.enum';
 import { AuthzRoles } from '../authz/authz.roles.decorator';
+import { Throttle, ThrottlerGuard } from '@nestjs/throttler';
+import { Headers, Response } from '@nestjs/common';
 
 @Controller('cats')
 @UseFilters(new CatsExceptionFilter())
@@ -65,6 +67,13 @@ export class CatsController {
   catAutenticado(
   ) {
     return 'cat autenticado.';
+  }
+
+  @Get('rate-limit')
+  @UseGuards(ThrottlerGuard)
+  rateLimit(
+  ) {
+    return `rate-limit.`;
   }
 
   @Get('cep')
