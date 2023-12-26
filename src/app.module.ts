@@ -12,6 +12,7 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { AuthzModule } from './authz/authz.module';
 import { ThrottlerModule } from '@nestjs/throttler';
+import { HealthModule } from './health/health.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { ThrottlerModule } from '@nestjs/throttler';
     AuthModule,
     AuthzModule,
     UsersModule,
+    HealthModule,
   ],
   controllers: [AppController],
   providers: [AppService, CronjobsService],
