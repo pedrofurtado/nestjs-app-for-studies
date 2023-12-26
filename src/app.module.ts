@@ -13,9 +13,14 @@ import { UsersModule } from './users/users.module';
 import { AuthzModule } from './authz/authz.module';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { HealthModule } from './health/health.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'public'),
+    }),
     ScheduleModule.forRoot(),
     ThrottlerModule.forRoot([{ ttl: 30000, limit: 5 }]),
     CatsModule,
